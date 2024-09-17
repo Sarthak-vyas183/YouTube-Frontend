@@ -1,9 +1,11 @@
 import './App.css'
+import Router from './components/routes/Router'
+import Navbar from './components/layout/Nav'
 function App() {
   return (
-  <>
-   <h1 className='text-purple-600 p-10'>Shreemati radha rani ki jay</h1>
-  </>
+  <div className='w-100vw h-100vh m-0 p-0'>
+    <Navbar/>
+  </div>
   )
 }
 

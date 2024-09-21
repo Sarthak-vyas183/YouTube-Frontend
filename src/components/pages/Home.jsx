@@ -86,7 +86,7 @@ function Home() {
 
       
 
-      <section className="w-[85%] min-h-full bg-slate-500">
+      <section className="w-[85%] min-h-full bg-[#0F0F0F] p-2 overflow-hidden">
         <Outlet />
       </section>
     </div>

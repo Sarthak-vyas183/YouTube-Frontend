@@ -2,9 +2,9 @@ import React from 'react'
 
 function Watch_later() {
   return (
-    <div className="bg-[#0F0F0F] text-white p-6 flex">
+    <div className="bg-[#0F0F0F] text-white p-6 flex h-full overflow-hidden">
       {/* Left section */}
-      <div className="w-1/3 mr-6 bg-gradient-to-b p-2 from-[#1E2A3A] via-[#0F1A2A] to-[#0F0F0F] rounded-mdp-2">
+      <div className="w-1/3 mr-6 bg-gradient-to-b p-2 from-[#1E2A3A] via-[#0F1A2A] to-[#0F0F0F] rounded-md">
         <div className="relative p-2">
           <img src="https://via.placeholder.com/500x300" alt="Maleficent" className="w-full rounded-lg" />
           <span className="absolute bottom-2 left-2 bg-red-600 text-white px-1 rounded">B S.S</span>
@@ -34,7 +34,7 @@ function Watch_later() {
       </div>
 
       {/* Right section */}
-      <div className="w-2/3 h-auto overflow-auto">
+      <div className="w-2/3 h-full overflow-y-auto pr-4">
         <div className="flex mb-4 space-x-2">
           <button className="bg-[#272727] text-white px-3 py-1 rounded-full text-sm font-medium">
             <svg className="w-4 h-4 inline-block mr-1" viewBox="0 0 24 24" fill="currentColor">
@@ -48,177 +48,17 @@ function Watch_later() {
         </div>
 
         {/* Video list */}
-        <div className="space-y-3 overflow-y-auto">
+        <div className="space-y-3">
           {/* Repeat this block for each video */}
-          <div className="flex">
-            <img src="https://via.placeholder.com/500x500" alt="Video thumbnail" className="w-40 h-24 object-cover rounded-lg mr-4" />
-            <div>
-              <h3 className="font-medium">आत्म-ज्ञान क्या है? || आचार्य प्रशांत, सुखाष्टक पर (2019)</h3>
-              <p className="text-sm text-gray-400">आचार्य प्रशांत - Acharya Prashant • 72K views • 4 years ago</p>
+          {[...Array(20)].map((_, index) => (
+            <div key={index} className="flex">
+              <img src="https://via.placeholder.com/500x500" alt="Video thumbnail" className="w-40 h-24 object-cover rounded-lg mr-4" />
+              <div>
+                <h3 className="font-medium">आत्म-ज्ञान क्या है? || आचार्य प्रशांत, सुखाष्टक पर (2019)</h3>
+                <p className="text-sm text-gray-400">आचार्य प्रशांत - Acharya Prashant • 72K views • 4 years ago</p>
+              </div>
             </div>
-          </div>
-          <div className="flex">
-            <img src="https://via.placeholder.com/500x500" alt="Video thumbnail" className="w-40 h-24 object-cover rounded-lg mr-4" />
-            <div>
-              <h3 className="font-medium">आत्म-ज्ञान क्या है? || आचार्य प्रशांत, सुखाष्टक पर (2019)</h3>
-              <p className="text-sm text-gray-400">आचार्य प्रशांत - Acharya Prashant • 72K views • 4 years ago</p>
-            </div>
-          </div>
-          <div className="flex">
-            <img src="https://via.placeholder.com/500x500" alt="Video thumbnail" className="w-40 h-24 object-cover rounded-lg mr-4" />
-            <div>
-              <h3 className="font-medium">आत्म-ज्ञान क्या है? || आचार्य प्रशांत, सुखाष्टक पर (2019)</h3>
-              <p className="text-sm text-gray-400">आचार्य प्रशांत - Acharya Prashant • 72K views • 4 years ago</p>
-            </div>
-          </div>
-          <div className="flex">
-            <img src="https://via.placeholder.com/500x500" alt="Video thumbnail" className="w-40 h-24 object-cover rounded-lg mr-4" />
-            <div>
-              <h3 className="font-medium">आत्म-ज्ञान क्या है? || आचार्य प्रशांत, सुखाष्टक पर (2019)</h3>
-              <p className="text-sm text-gray-400">आचार्य प्रशांत - Acharya Prashant • 72K views • 4 years ago</p>
-            </div>
-          </div>
-          <div className="flex">
-            <img src="https://via.placeholder.com/500x500" alt="Video thumbnail" className="w-40 h-24 object-cover rounded-lg mr-4" />
-            <div>
-              <h3 className="font-medium">आत्म-ज्ञान क्या है? || आचार्य प्रशांत, सुखाष्टक पर (2019)</h3>
-              <p className="text-sm text-gray-400">आचार्य प्रशांत - Acharya Prashant • 72K views • 4 years ago</p>
-            </div>
-          </div>
-          <div className="flex">
-            <img src="https://via.placeholder.com/500x500" alt="Video thumbnail" className="w-40 h-24 object-cover rounded-lg mr-4" />
-            <div>
-              <h3 className="font-medium">आत्म-ज्ञान क्या है? || आचार्य प्रशांत, सुखाष्टक पर (2019)</h3>
-              <p className="text-sm text-gray-400">आचार्य प्रशांत - Acharya Prashant • 72K views • 4 years ago</p>
-            </div>
-          </div>
-          <div className="flex">
-            <img src="https://via.placeholder.com/500x500" alt="Video thumbnail" className="w-40 h-24 object-cover rounded-lg mr-4" />
-            <div>
-              <h3 className="font-medium">आत्म-ज्ञान क्या है? || आचार्य प्रशांत, सुखाष्टक पर (2019)</h3>
-              <p className="text-sm text-gray-400">आचार्य प्रशांत - Acharya Prashant • 72K views • 4 years ago</p>
-            </div>
-          </div>
-          <div className="flex">
-            <img src="https://via.placeholder.com/500x500" alt="Video thumbnail" className="w-40 h-24 object-cover rounded-lg mr-4" />
-            <div>
-              <h3 className="font-medium">आत्म-ज्ञान क्या है? || आचार्य प्रशांत, सुखाष्टक पर (2019)</h3>
-              <p className="text-sm text-gray-400">आचार्य प्रशांत - Acharya Prashant • 72K views • 4 years ago</p>
-            </div>
-          </div>
-          <div className="flex">
-            <img src="https://via.placeholder.com/500x500" alt="Video thumbnail" className="w-40 h-24 object-cover rounded-lg mr-4" />
-            <div>
-              <h3 className="font-medium">आत्म-ज्ञान क्या है? || आचार्य प्रशांत, सुखाष्टक पर (2019)</h3>
-              <p className="text-sm text-gray-400">आचार्य प्रशांत - Acharya Prashant • 72K views • 4 years ago</p>
-            </div>
-          </div>
-          <div className="flex">
-            <img src="https://via.placeholder.com/500x500" alt="Video thumbnail" className="w-40 h-24 object-cover rounded-lg mr-4" />
-            <div>
-              <h3 className="font-medium">आत्म-ज्ञान क्या है? || आचार्य प्रशांत, सुखाष्टक पर (2019)</h3>
-              <p className="text-sm text-gray-400">आचार्य प्रशांत - Acharya Prashant • 72K views • 4 years ago</p>
-            </div>
-          </div>
-          <div className="flex">
-            <img src="https://via.placeholder.com/500x500" alt="Video thumbnail" className="w-40 h-24 object-cover rounded-lg mr-4" />
-            <div>
-              <h3 className="font-medium">आत्म-ज्ञान क्या है? || आचार्य प्रशांत, सुखाष्टक पर (2019)</h3>
-              <p className="text-sm text-gray-400">आचार्य प्रशांत - Acharya Prashant • 72K views • 4 years ago</p>
-            </div>
-          </div>
-          <div className="flex">
-            <img src="https://via.placeholder.com/500x500" alt="Video thumbnail" className="w-40 h-24 object-cover rounded-lg mr-4" />
-            <div>
-              <h3 className="font-medium">आत्म-ज्ञान क्या है? || आचार्य प्रशांत, सुखाष्टक पर (2019)</h3>
-              <p className="text-sm text-gray-400">आचार्य प्रशांत - Acharya Prashant • 72K views • 4 years ago</p>
-            </div>
-          </div>
-          <div className="flex">
-            <img src="https://via.placeholder.com/500x500" alt="Video thumbnail" className="w-40 h-24 object-cover rounded-lg mr-4" />
-            <div>
-              <h3 className="font-medium">आत्म-ज्ञान क्या है? || आचार्य प्रशांत, सुखाष्टक पर (2019)</h3>
-              <p className="text-sm text-gray-400">आचार्य प्रशांत - Acharya Prashant • 72K views • 4 years ago</p>
-            </div>
-          </div>
-          <div className="flex">
-            <img src="https://via.placeholder.com/500x500" alt="Video thumbnail" className="w-40 h-24 object-cover rounded-lg mr-4" />
-            <div>
-              <h3 className="font-medium">आत्म-ज्ञान क्या है? || आचार्य प्रशांत, सुखाष्टक पर (2019)</h3>
-              <p className="text-sm text-gray-400">आचार्य प्रशांत - Acharya Prashant • 72K views • 4 years ago</p>
-            </div>
-          </div>
-          <div className="flex">
-            <img src="https://via.placeholder.com/500x500" alt="Video thumbnail" className="w-40 h-24 object-cover rounded-lg mr-4" />
-            <div>
-              <h3 className="font-medium">आत्म-ज्ञान क्या है? || आचार्य प्रशांत, सुखाष्टक पर (2019)</h3>
-              <p className="text-sm text-gray-400">आचार्य प्रशांत - Acharya Prashant • 72K views • 4 years ago</p>
-            </div>
-          </div>
-          <div className="flex">
-            <img src="https://via.placeholder.com/500x500" alt="Video thumbnail" className="w-40 h-24 object-cover rounded-lg mr-4" />
-            <div>
-              <h3 className="font-medium">आत्म-ज्ञान क्या है? || आचार्य प्रशांत, सुखाष्टक पर (2019)</h3>
-              <p className="text-sm text-gray-400">आचार्य प्रशांत - Acharya Prashant • 72K views • 4 years ago</p>
-            </div>
-          </div>
-          <div className="flex">
-            <img src="https://via.placeholder.com/500x500" alt="Video thumbnail" className="w-40 h-24 object-cover rounded-lg mr-4" />
-            <div>
-              <h3 className="font-medium">आत्म-ज्ञान क्या है? || आचार्य प्रशांत, सुखाष्टक पर (2019)</h3>
-              <p className="text-sm text-gray-400">आचार्य प्रशांत - Acharya Prashant • 72K views • 4 years ago</p>
-            </div>
-          </div>
-          <div className="flex">
-            <img src="https://via.placeholder.com/500x500" alt="Video thumbnail" className="w-40 h-24 object-cover rounded-lg mr-4" />
-            <div>
-              <h3 className="font-medium">आत्म-ज्ञान क्या है? || आचार्य प्रशांत, सुखाष्टक पर (2019)</h3>
-              <p className="text-sm text-gray-400">आचार्य प्रशांत - Acharya Prashant • 72K views • 4 years ago</p>
-            </div>
-          </div>
-          <div className="flex">
-            <img src="https://via.placeholder.com/500x500" alt="Video thumbnail" className="w-40 h-24 object-cover rounded-lg mr-4" />
-            <div>
-              <h3 className="font-medium">आत्म-ज्ञान क्या है? || आचार्य प्रशांत, सुखाष्टक पर (2019)</h3>
-              <p className="text-sm text-gray-400">आचार्य प्रशांत - Acharya Prashant • 72K views • 4 years ago</p>
-            </div>
-          </div>
-          <div className="flex">
-            <img src="https://via.placeholder.com/500x500" alt="Video thumbnail" className="w-40 h-24 object-cover rounded-lg mr-4" />
-            <div>
-              <h3 className="font-medium">आत्म-ज्ञान क्या है? || आचार्य प्रशांत, सुखाष्टक पर (2019)</h3>
-              <p className="text-sm text-gray-400">आचार्य प्रशांत - Acharya Prashant • 72K views • 4 years ago</p>
-            </div>
-          </div>
-          <div className="flex">
-            <img src="https://via.placeholder.com/500x500" alt="Video thumbnail" className="w-40 h-24 object-cover rounded-lg mr-4" />
-            <div>
-              <h3 className="font-medium">आत्म-ज्ञान क्या है? || आचार्य प्रशांत, सुखाष्टक पर (2019)</h3>
-              <p className="text-sm text-gray-400">आचार्य प्रशांत - Acharya Prashant • 72K views • 4 years ago</p>
-            </div>
-          </div>
-          <div className="flex">
-            <img src="https://via.placeholder.com/500x500" alt="Video thumbnail" className="w-40 h-24 object-cover rounded-lg mr-4" />
-            <div>
-              <h3 className="font-medium">आत्म-ज्ञान क्या है? || आचार्य प्रशांत, सुखाष्टक पर (2019)</h3>
-              <p className="text-sm text-gray-400">आचार्य प्रशांत - Acharya Prashant • 72K views • 4 years ago</p>
-            </div>
-          </div>
-          <div className="flex">
-            <img src="https://via.placeholder.com/500x500" alt="Video thumbnail" className="w-40 h-24 object-cover rounded-lg mr-4" />
-            <div>
-              <h3 className="font-medium">आत्म-ज्ञान क्या है? || आचार्य प्रशांत, सुखाष्टक पर (2019)</h3>
-              <p className="text-sm text-gray-400">आचार्य प्रशांत - Acharya Prashant • 72K views • 4 years ago</p>
-            </div>
-          </div>
-          <div className="flex">
-            <img src="https://via.placeholder.com/500x500" alt="Video thumbnail" className="w-40 h-24 object-cover rounded-lg mr-4" />
-            <div>
-              <h3 className="font-medium">आत्म-ज्ञान क्या है? || आचार्य प्रशांत, सुखाष्टक पर (2019)</h3>
-              <p className="text-sm text-gray-400">आचार्य प्रशांत - Acharya Prashant • 72K views • 4 years ago</p>
-            </div>
-          </div>
-          {/* Add more video items here */}
+          ))}
         </div>
       </div>
     </div>

@@ -18,6 +18,7 @@ import YourPosts from '../pages/AllYourChannelDetail/YourPosts';
 import YourShorts from '../pages/AllYourChannelDetail/YourShorts';
 import YourPlaylist from '../pages/AllYourChannelDetail/YourPlaylist';
 import AllPost from '../pages/AllYourChannelDetail/AllPost';
+import VideoPlayer from '../pages/VideoPlayer';
 
 function Router() {
   return (
@@ -47,8 +48,10 @@ function Router() {
 
 
              <Route path='yourVideo' element={<YourVideo/>} /> 
-         </Route>
 
+             
+         </Route>
+         <Route path='/playvideo' element={<VideoPlayer/>}/>
       </Routes>
     </div>
   )

@@ -8,7 +8,7 @@ function VideoPlayer() {
       {/* Main content */}
       <div className="w-[70%] h-[70%] pr-4">
         {/* Video player */}
-        <div className="w-full h-full mb-4">
+        <div className="w-full h-96 mb-4">
           <iframe
             src="https://res.cloudinary.com/sarthak183/video/upload/v1726167029/muaan5t0hwkr7wioq0l4.mp4"
             allow="autoplay; encrypted-media"
@@ -57,7 +57,7 @@ function VideoPlayer() {
         {/* Comments section */}
         <div>
           <h3 className="text-lg font-bold mb-2">12 Comments</h3>
-          {/* Add comments here */}
+           <h1>here we will show comment component here</h1>
         </div>
       </div>
 

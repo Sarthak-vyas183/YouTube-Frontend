@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaThumbsUp, FaThumbsDown, FaShare, FaDownload, FaEllipsisH } from 'react-icons/fa';
+import Comment from './Comment';
 
 function VideoPlayer() {
   return (
@@ -57,7 +58,11 @@ function VideoPlayer() {
         {/* Comments section */}
         <div>
           <h3 className="text-lg font-bold mb-2">12 Comments</h3>
-           <h1>here we will show comment component here</h1>
+           <Comment/>
+           <Comment/>
+           <Comment/>
+           <Comment/>
+           <Comment/>
         </div>
       </div>
 

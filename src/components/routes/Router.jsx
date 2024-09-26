@@ -19,10 +19,11 @@ import YourShorts from '../pages/AllYourChannelDetail/YourShorts';
 import YourPlaylist from '../pages/AllYourChannelDetail/YourPlaylist';
 import AllPost from '../pages/AllYourChannelDetail/AllPost';
 import VideoPlayer from '../pages/VideoPlayer';
+import AccountSelector from '../pages/Registeration/Account';
 
 function Router() {
   return (
-    <div className='w-full h-[89.5%]'>
+    <div className='w-full h-[89.5%] absolute top-[10vh]'>
       <Routes>
         
          <Route path="/" element={<Home/>}>  
@@ -52,6 +53,7 @@ function Router() {
              
          </Route>
          <Route path='/playvideo' element={<VideoPlayer/>}/>
+         <Route path='/Account' element={<AccountSelector/>}/>
       </Routes>
     </div>
   )

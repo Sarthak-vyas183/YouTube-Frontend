@@ -7,7 +7,6 @@ import History from '../pages/History';
 import LikedVideo from "../pages/Liked_video"
 import Playlist from "../pages/Playlist"
 import Shorts from "../pages/Shorts"
-import Sidebar from '../pages/sidebar';
 import Subscription from "../pages/Subscription"
 import WatchLater from "../pages/Watch_later"
 import YourChannel from "../pages/Your_Channel"
@@ -20,6 +19,8 @@ import YourPlaylist from '../pages/AllYourChannelDetail/YourPlaylist';
 import AllPost from '../pages/AllYourChannelDetail/AllPost';
 import VideoPlayer from '../pages/VideoPlayer';
 import AccountSelector from '../pages/Registeration/Account';
+import Login from '../pages/Registeration/Login';
+import SignUp from '../pages/Registeration/SignUp';
 
 function Router() {
   return (
@@ -49,11 +50,16 @@ function Router() {
 
 
              <Route path='yourVideo' element={<YourVideo/>} /> 
+         </Route> 
 
-             
-         </Route>
-         <Route path='/playvideo' element={<VideoPlayer/>}/>
-         <Route path='/Account' element={<AccountSelector/>}/>
+         <Route path='/playvideo' element={<VideoPlayer/>}/> 
+
+         <Route path='/Account' element={<AccountSelector/>}>
+              <Route path='login' element={<Login/>} />
+              <Route path='signUp' element={<SignUp/>}/>
+         </Route> 
+
+
       </Routes>
     </div>
   )

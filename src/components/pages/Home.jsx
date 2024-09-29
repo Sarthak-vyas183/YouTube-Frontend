@@ -1,9 +1,8 @@
 import React from "react";
-import { useAuth } from "../utiles/useAuth";
 import { useNavigate, NavLink, Outlet, Navigate } from "react-router-dom";
 
 function Home() {
-  const { user } = useAuth();
+ 
   return (
     <div className="w-full h-full flex"> 
       <section className="w-[100%] min-h-full bg-[#0F0F0F] p-2 overflow-hidden">

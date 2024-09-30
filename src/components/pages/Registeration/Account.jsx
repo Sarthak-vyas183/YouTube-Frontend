@@ -1,6 +1,10 @@
 import React from "react";
 import { Outlet, Link } from "react-router-dom";
+import UserContext from "../../../context/UserContext";
+import { useContext } from "react";
 const AccountSelector = () => {
+  const {User, token} = useContext(UserContext)
+  console.log(User && User.fullName)
   return (
     <div className="bg-gray-900 min-h-[90vh] flex items-center justify-center p-4">
       <div className="bg-gray-800 rounded-2xl w-full max-w-md p-6 space-y-6">
@@ -47,8 +51,8 @@ const AccountSelector = () => {
           <span className="text-gray-400 text-sm"><Link to='/Account/login'>Login</Link></span>
         </div>
 
-        <h1 className="text-white text-2xl font-medium">Choose an account</h1>
-
+        <h1 className="text-white text-2xl font-medium">{User && User.fullName?(User.fullName) : ('Choose an account')}</h1>
+          
         <div className="space-y-4">
           <div className="flex items-center space-x-3 p-3 rounded-lg transition cursor-pointer">
             <Outlet/>

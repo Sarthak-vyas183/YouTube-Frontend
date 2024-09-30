@@ -1,9 +1,11 @@
 import React, { useContext, useState } from "react";
 import UserContext from "../../../context/UserContext";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
-  const { token, setToken } = useContext(UserContext);
+  const {setTokenToLS, setLoggedUserData} = useContext(UserContext);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -15,7 +17,6 @@ function Login() {
       ...prev,
       [name]: value,
     }));
-    console.log(formData.email);
   };
 
   const handleSubmit = async () => {
@@ -25,16 +26,44 @@ function Login() {
         password: formData.password,
       });
 
-      console.log(response.data);
-
-      setToken(response.data.token);
+      if (response.status === 200 && response.data.data.accessToken) {
+        setTokenToLS(response.data.data.accessToken);
+        setLoggedUserData(response.data.data.user);
+        setFormData({
+          email: "",
+          password: "",
+        });
+        toast.success(response.data.message || "Login successful!");
+      } else {
+        toast.error("Login failed: Incorrect email or password.");
+      }
     } catch (error) {
-      console.error("Axios error:", error);
+      if (error.response) {
+        toast.error(error.response.data || "An error occurred.");
+      } else {
+        toast.error("Network error: Unable to reach the server.");
+      }
+      setFormData({
+        email: "",
+        password: "",
+      });
     }
   };
 
   return (
     <div className="space-y-2">
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <div className="flex flex-col space-y-2">
         <input
           name="email"

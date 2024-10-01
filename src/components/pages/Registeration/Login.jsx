@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
-  const {setTokenToLS, setLoggedUserData} = useContext(UserContext);
+  const {setTokenToLS} = useContext(UserContext);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -28,7 +28,6 @@ function Login() {
 
       if (response.status === 200 && response.data.data.accessToken) {
         setTokenToLS(response.data.data.accessToken);
-        setLoggedUserData(response.data.data.user);
         setFormData({
           email: "",
           password: "",

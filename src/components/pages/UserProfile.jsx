@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { FaUserCircle, FaChevronRight, FaSignOutAlt, FaYoutube, FaDollarSign } from 'react-icons/fa';
 import { SiGoogle } from 'react-icons/si';
-
+import { Link } from 'react-router-dom';
+import UserContext from '../../context/UserContext';
 const UserProfile = ({ username, avatarUrl }) => {
+  const {token, LogoutUser} = useContext(UserContext)
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -22,12 +24,11 @@ const UserProfile = ({ username, avatarUrl }) => {
       {isOpen && (
         <div className="absolute right-4 mt-2 w-64 bg-gray-800 rounded-lg shadow-xl z-10">
           <div className="p-4 border-b border-gray-700">
-            <p className="text-blue-400 text-sm cursor-pointer hover:underline">View your channel</p>
+            <p className="text-blue-400 text-sm cursor-pointer hover:underline"><Link to={"/yourChannel"}>View your channel</Link></p>
           </div>
           <div className="py-2">
-            <MenuItem icon={<SiGoogle />} text="Google Account" />
             <MenuItem icon={<FaUserCircle />} text="Switch account" rightIcon={<FaChevronRight />} />
-            <MenuItem icon={<FaSignOutAlt />} text="Sign out" />
+            <MenuItem icon={<FaSignOutAlt />} text={token ? <p onClick={()=> LogoutUser()}>sign out</p> : <Link to={'/account/login'}>sign in</Link> } />
           </div>
           <div className="border-t border-gray-700 py-2">
             <MenuItem icon={<FaYoutube />} text="YouTube Studio" />

@@ -22,9 +22,6 @@ function AuthProvider({ children }) {
       );
       
       const userData = response.data;
-      console.log(response);
-      console.log(userData);
-
       // Set the user data after verification
       setUser({
         fullName: userData.fullName,
@@ -45,11 +42,23 @@ function AuthProvider({ children }) {
   let LogoutUser = async() => {
     localStorage.removeItem("token")
     setToken("");
+  } 
+
+  let ClearUserData = () => {
+     setUser({
+      fullName: null,
+      email: null,
+      username: null,
+      coverImage: null,
+      avatar: null,
+     })
   }
 
   useEffect(() => {
     if(token) {
       setLoggedUserData();
+    } else {
+      ClearUserData();
     }
   }, [token]);
 
@@ -60,7 +69,7 @@ function AuthProvider({ children }) {
   };
 
   return (
-    <UserContext.Provider value={{ setTokenToLS, token, User }}>
+    <UserContext.Provider value={{ setTokenToLS, token, User, LogoutUser }}>
       {children}
     </UserContext.Provider>
   );

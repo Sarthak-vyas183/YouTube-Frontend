@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from "react";
+import React, { useState, useCallback, useRef, useEffect, useContext } from "react";
 import {
   FaSearch,
   FaMicrophone,
@@ -9,10 +9,13 @@ import {
 import UserProfile from "../pages/UserProfile";
 import Sidebar from "./Sidebar.jsx";
 import PlayLogo from "./PlayLogo.jsx"
+import UserContext from "../../context/UserContext.js";
 function Nav() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
+  const {User, token} = useContext(UserContext);
+
 
   const handleSearchChange = useCallback((e) => {
     setSearchQuery(e.target.value);
@@ -89,14 +92,18 @@ function Nav() {
           <button aria-label="Notifications" className="p-2">
             <FaBell className="text-xl cursor-pointer" />
           </button>
+
+
           <div className="ml-2">
             <UserProfile
-              username={"sarthak@183"}
-              avatarUrl={
+              username={User && User.username || "Guest"}
+              avatarUrl={ User && User.avatar ||
                 "http://res.cloudinary.com/sarthak183/image/upload/v1725822478/plgpc2uvuvb5erjvdfis.png"
               }
             />
           </div>
+
+
         </div>
       </nav>
 

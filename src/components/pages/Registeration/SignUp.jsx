@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function SignUp() {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
+    fullName: "",
     username: "",
     email: "",
     password: "",
@@ -11,46 +13,103 @@ function SignUp() {
   });
   const [isUsernameUnique, setIsUsernameUnique] = useState(null);
 
+  // Handle input field changes
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    setFormData(prevData => ({
+    setFormData((prevData) => ({
       ...prevData,
-      [name]: files ? files[0] : value
+      [name]: files ? files[0] : value,
     }));
   };
 
+  // Verify if the username is unique
   const verifyUsername = async () => {
-    // Placeholder function for username verification
-    const isUnique = await new Promise((resolve) =>
-      setTimeout(() => resolve(Math.random() > 0.5), 1000)
-    );
-    setIsUsernameUnique(isUnique);
+    console.log("verfied username")
   };
 
+  // Proceed to the next step after checking required fields
   const handleNext = () => {
-    if (formData.username && formData.email && formData.password) {
+    if (formData.username && formData.email && formData.password && formData.fullName) {
       setStep(2);
     } else {
-      alert("Please fill all fields before proceeding.");
+      toast.error("Please fill all fields before proceeding.");
     }
   };
 
+  // Go back to the previous step
   const handleBack = () => {
     setStep(1);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Here you would typically send the form data to your backend
-    console.log("Form submitted:", formData);
+  // Submit the form data
+  const handleSubmit = async (e) => {
+   e.preventDefault()
+    if (!formData.avatar) {
+      toast.error("Please upload both avatar and cover image.");
+      return;
+    }
+
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append("email", formData.email);
+      formDataToSend.append("username", formData.username);
+      formDataToSend.append("fullName", formData.fullName);
+      formDataToSend.append("password", formData.password);
+      formDataToSend.append("avatar", formData.avatar);
+      formDataToSend.append("coverImage", formData.coverImage);
+
+      const response = await fetch(`/api/v1/user/register`, {
+        method: "POST",
+        body: formDataToSend,
+      }); 
+      console.log(response)
+        if(!response.ok) {
+           return toast.error("signUp failed")
+        }
+
+        toast.success("sign Up success");
+
+    } catch (error) {
+      console.log(error)
+      toast.error("An unexpected error occurred. Please try again.");
+    }
   };
 
   return (
     <div className="space-y-2 bg-gray-800 rounded-lg max-w-md mx-auto">
+        <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <h2 className="text-2xl font-bold text-white mb-6">Sign Up</h2>
       <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
         {step === 1 ? (
           <>
+            {/* Full Name Input */}
+            <div>
+              <label htmlFor="fullName" className="text-gray-300 mb-1 block">
+                Full Name
+              </label>
+              <input
+                id="fullName"
+                name="fullName"
+                className="w-full bg-transparent border-b border-gray-600 pb-2 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                type="text"
+                placeholder="Enter your full name"
+                value={formData.fullName}
+                onChange={handleChange}
+              />
+            </div>
+
+            {/* Username Input */}
             <div>
               <label htmlFor="username" className="text-gray-300 mb-1 block">
                 Username
@@ -75,17 +134,14 @@ function SignUp() {
               </div>
               {isUsernameUnique !== null && (
                 <p
-                  className={`mt-1 text-sm ${
-                    isUsernameUnique ? "text-green-500" : "text-red-500"
-                  }`}
+                  className={`mt-1 text-sm ${isUsernameUnique ? "text-green-500" : "text-red-500"}`}
                 >
-                  {isUsernameUnique
-                    ? "Username is available!"
-                    : "Username is taken."}
+                  {isUsernameUnique ? "Username is available!" : "Username is taken."}
                 </p>
               )}
             </div>
 
+            {/* Email and Password Inputs */}
             <div className="flex space-x-4">
               <div className="flex-1">
                 <label htmlFor="email" className="text-gray-300 mb-1 block">
@@ -154,6 +210,7 @@ function SignUp() {
                   type="file"
                   accept="image/*"
                   onChange={handleChange}
+                  required
                 />
               </div>
             </div>

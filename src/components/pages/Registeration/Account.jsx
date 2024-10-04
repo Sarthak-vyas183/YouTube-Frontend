@@ -48,10 +48,7 @@ const AccountSelector = () => {
             </text>
           </svg>
           <span className="text-gray-400 text-sm"><Link to='/Account/login'>Login</Link></span>
-        </div>
-
-        <h1 className="text-white text-2xl font-medium">{User && User.fullName?(User.fullName) : ('Choose an account')}</h1>
-          
+        </div> 
         <div className="space-y-4">
           <div className="flex items-center space-x-3 p-3 rounded-lg transition cursor-pointer">
             <Outlet/>

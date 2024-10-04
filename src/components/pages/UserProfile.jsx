@@ -28,7 +28,7 @@ const UserProfile = ({ username, avatarUrl }) => {
           </div>
           <div className="py-2">
             <MenuItem icon={<FaUserCircle />} text="Switch account" rightIcon={<FaChevronRight />} />
-            <MenuItem icon={<FaSignOutAlt />} text={token ? <p onClick={()=> LogoutUser()}>sign out</p> : <Link to={'/account/login'}>sign in</Link> } />
+            <MenuItem icon={<FaSignOutAlt />} text={token ? <p onClick={()=> LogoutUser()}>sign out</p> : <Link to={'/account/signup'}>sign Up</Link> } />
           </div>
           <div className="border-t border-gray-700 py-2">
             <MenuItem icon={<FaYoutube />} text="YouTube Studio" />

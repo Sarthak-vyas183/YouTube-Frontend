@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import UserContext from "../../../context/UserContext";
+import { Navigate } from "react-router-dom";
 function SignUp() {
+  const { setTokenToLS } = useContext(UserContext);
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     fullName: "",
@@ -24,12 +28,17 @@ function SignUp() {
 
   // Verify if the username is unique
   const verifyUsername = async () => {
-    console.log("verfied username")
+    console.log("verfied username");
   };
 
   // Proceed to the next step after checking required fields
   const handleNext = () => {
-    if (formData.username && formData.email && formData.password && formData.fullName) {
+    if (
+      formData.username &&
+      formData.email &&
+      formData.password &&
+      formData.fullName
+    ) {
       setStep(2);
     } else {
       toast.error("Please fill all fields before proceeding.");
@@ -43,10 +52,16 @@ function SignUp() {
 
   // Submit the form data
   const handleSubmit = async (e) => {
-   e.preventDefault()
-    if (!formData.avatar) {
-      toast.error("Please upload both avatar and cover image.");
-      return;
+    e.preventDefault();
+
+    if (
+      !formData.fullName ||
+      !formData.email ||
+      !formData.password ||
+      !formData.username ||
+      !formData.avatar
+    ) {
+      toast.error("all fields are require");
     }
 
     try {
@@ -58,26 +73,45 @@ function SignUp() {
       formDataToSend.append("avatar", formData.avatar);
       formDataToSend.append("coverImage", formData.coverImage);
 
-      const response = await fetch(`/api/v1/user/register`, {
-        method: "POST",
-        body: formDataToSend,
-      }); 
-      console.log(response)
-        if(!response.ok) {
-           return toast.error("signUp failed")
+      const response = await axios.post(
+        "/api/v1/user/register",
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data", // Make sure to set this header for file uploads
+          },
         }
+      );
+      setFormData({
+        fullName: "",
+        username: "",
+        email: "",
+        password: "",
+        coverImage: null,
+        avatar: null,
+      });
 
-        toast.success("sign Up success");
-
+      console.log(response);
+      if (response.status === 200 || (201 && response.data.data.accessToken)) {
+        setTokenToLS(response.data.data.accessToken);
+      }
+      toast.success("Sign Up successful");
+      Navigate("/");
     } catch (error) {
-      console.log(error)
-      toast.error("An unexpected error occurred. Please try again.");
+      console.error(error.response.status);
+      if (error.response.status == 409) {
+        toast.error("User Already exist");
+      } else if (error.response.status == 400) {
+        toast.error("All field require");
+      } else {
+        toast.error("An unexpected error occurred. Please try again.");
+      }
     }
   };
 
   return (
     <div className="space-y-2 bg-gray-800 rounded-lg max-w-md mx-auto">
-        <ToastContainer
+      <ToastContainer
         position="top-right"
         autoClose={3000}
         hideProgressBar={false}
@@ -134,9 +168,13 @@ function SignUp() {
               </div>
               {isUsernameUnique !== null && (
                 <p
-                  className={`mt-1 text-sm ${isUsernameUnique ? "text-green-500" : "text-red-500"}`}
+                  className={`mt-1 text-sm ${
+                    isUsernameUnique ? "text-green-500" : "text-red-500"
+                  }`}
                 >
-                  {isUsernameUnique ? "Username is available!" : "Username is taken."}
+                  {isUsernameUnique
+                    ? "Username is available!"
+                    : "Username is taken."}
                 </p>
               )}
             </div>
@@ -186,7 +224,10 @@ function SignUp() {
           <>
             <div className="flex space-x-4">
               <div className="flex-1">
-                <label htmlFor="coverImage" className="text-gray-300 mb-1 block">
+                <label
+                  htmlFor="coverImage"
+                  className="text-gray-300 mb-1 block"
+                >
                   Cover Image
                 </label>
                 <input

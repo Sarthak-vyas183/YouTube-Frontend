@@ -8,14 +8,17 @@ import {
 } from "react-icons/fa";
 import UserProfile from "../pages/UserProfile";
 import Sidebar from "./Sidebar.jsx";
-import PlayLogo from "./PlayLogo.jsx"
+import PlayLogo from "./PlayLogo.jsx";
 import UserContext from "../../context/UserContext.js";
+import defaultUser from "../../assets/user.png";
+import VideoUpload from "./VideoUpload"; // Import the new component
+
 function Nav() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isUploadOpen, setIsUploadOpen] = useState(false); // State for upload modal
   const sidebarRef = useRef(null);
-  const {User, token} = useContext(UserContext);
-
+  const { User, token } = useContext(UserContext);
 
   const handleSearchChange = useCallback((e) => {
     setSearchQuery(e.target.value);
@@ -28,6 +31,10 @@ function Nav() {
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const toggleUpload = () => {
+    setIsUploadOpen(!isUploadOpen); // Toggle upload modal
   };
 
   useEffect(() => {
@@ -47,17 +54,17 @@ function Nav() {
     <>
       <nav className="bg-[#0f0f0f] text-white p-2 flex items-center justify-between fixed top-0 left-0 right-0 z-50">
         {/* Left section */}
-        <div className="flex items-center  px-2">
+        <div className="flex items-center px-2">
           <button aria-label="Open menu" className="p-2" onClick={toggleSidebar}>
             <FaBars className="text-xl cursor-pointer" />
-          </button> 
+          </button>
           <div className="pl-2">
-          <PlayLogo/>
+            <PlayLogo />
           </div>
         </div>
 
         {/* Middle section */}
-        <div className="flex-grow mx-4 max-w-2xl  px-2">
+        <div className="flex-grow mx-4 max-w-2xl px-2">
           <form onSubmit={handleSearchSubmit} className="flex">
             <input
               type="text"
@@ -86,24 +93,19 @@ function Nav() {
 
         {/* Right section */}
         <div className="flex items-center px-2">
-          <button aria-label="Create video" className="p-2">
+          <button aria-label="Create video" className="p-2" onClick={toggleUpload}>
             <FaVideo className="text-xl cursor-pointer" />
           </button>
           <button aria-label="Notifications" className="p-2">
             <FaBell className="text-xl cursor-pointer" />
           </button>
 
-
           <div className="ml-2">
             <UserProfile
               username={User && User.username || "Guest"}
-              avatarUrl={ User && User.avatar ||
-                "http://res.cloudinary.com/sarthak183/image/upload/v1725822478/plgpc2uvuvb5erjvdfis.png"
-              }
+              avatarUrl={User && User.avatar || defaultUser}
             />
           </div>
-
-
         </div>
       </nav>
 
@@ -111,10 +113,11 @@ function Nav() {
       <div ref={sidebarRef}>
         <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       </div>
+
+      {/* Video Upload Modal */}
+      {isUploadOpen && <VideoUpload onClose={toggleUpload} />} {/* New component for video upload */}
     </>
   );
 }
-
-
 
 export default Nav;

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-
+import Upload from "../../assets/Upload.png";
 function VideoUpload({ onClose }) {
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [thumbnail, setThumbnail] = useState("");
   const [step, setStep] = useState(1); // Track the current step
+  const [uploading, setUploading] = useState(false); // Track uploading state
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -17,20 +19,24 @@ function VideoUpload({ onClose }) {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle the upload logic here
+    setUploading(true);
+    // Simulate upload logic
     console.log("Uploading:", file, title, description);
+    // Simulate a delay for upload
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    setUploading(false);
     onClose(); // Close the modal after submission
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-      <div className="bg-[#121212] p-6 rounded shadow-lg text-white w-[50%] relative">
+    <div className="fixed inset-0 bg-black-500 bg-opacity-75 w-[100vw] h-[100vh] flex items-center justify-center z-50">
+      <div className="bg-[#282828] p-6 rounded-lg shadow-lg text-white md:w-[50%] relative">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-0 right-2 text-4xl text-gray-600 hover:text-gray-900"
+          className="absolute top-0 right-2 text-4xl text-gray-600 hover:text-gray-100"
           aria-label="Close"
         >
           &times; {/* Cross icon */}
@@ -38,52 +44,68 @@ function VideoUpload({ onClose }) {
 
         <h2 className="text-lg font-bold mb-4">Upload Video</h2>
         {step === 1 ? (
-          <form onSubmit={handleNext} className="flex flex-col items-center">
-            <div className="border-dashed border-2 border-gray-400 rounded-lg p-8 flex flex-col items-center justify-center mb-4 w-full">
-              <input
-                type="file"
-                accept="video/*"
-                onChange={handleFileChange}
-                required
-                className="hidden"
-                id="file-upload"
+          <div>
+            <label
+              htmlFor="file-upload"
+              className="h-32 w-full cursor-pointer p-2 justify-center items-center flex flex-col"
+            >
+              <img
+                className="h-28 w-28 p-4  bg-[#909090] rounded-full text-white"
+                src={Upload}
+                alt=""
               />
-              <label
-                htmlFor="file-upload"
-                className="cursor-pointer text-center"
+              <h1>Upload Video file</h1>
+            </label>
+            <input type="file" id="file-upload" className="hidden" /> <br />
+            <div className="w-full flex justify-end">
+              <button
+                onClick={() => setStep(2)}
+                className="p-1 px-6 bg-blue-600"
               >
-                <div className="flex flex-col items-center">
-                  <div className="text-4xl mb-2">
-                    <span className="material-icons text-white">upload</span>
-                  </div>
-                  <p className="text-lg text-white">Drag and drop video files to upload</p>
-                  <p className="text-sm  text-white">or</p>
-                  <button type="button" className="bg-blue-500 text-white px-4 py-2 rounded mt-2">
-                    Select files
-                  </button>
-                </div>
-              </label>
+                Next
+              </button>
             </div>
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-              Next
-            </button>
-          </form>
+          </div>
         ) : (
-          <form onSubmit={handleSubmit} className="flex flex-col">
-           
-            {/* Action Buttons */}
-            <div className="flex justify-between">
-              <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">
-                Upload
-              </button>
-              <button type="button" onClick={() => setStep(1)} className="bg-gray-300 text-black px-4 py-2 rounded">
-                Back
-              </button>
-              <button type="button" onClick={onClose} className="bg-red-500 text-white px-4 py-2 rounded">
-                Cancel
-              </button>
+          <section>
+            <h1>{title || "Video Title"}</h1> <br />
+            <h1 className="text-2xl font-semibold">Details</h1> <br />
+            <div>
+              <input
+                type="text"
+                placeholder="Title of the video"
+                value={title}
+                className="outline-none py-1 px-2 w-full bg-transparent border-2 border-white"
+              />
+            </div>{" "}
+            <br />
+            <div>
+              <textarea
+                className="bg-transparent px-2 py-1 row-8 w-full outline-none border-2 border-white"
+                placeholder="Deacription.."
+              ></textarea>
+            </div>{" "}
+            <br />
+            <div className="cursor-pointer">
+              <input
+                type="text"
+                placeholder="Uploaded video file path"
+                value={file}
+                className="outline-none py-1 px-2 w-full bg-transparent border-2 border-white"
+              />{" "}
+              <br /> <br />
+              <span className="flex w-full px-1 gap-12">
+                <label htmlFor="thumbnail">
+                  <p className="bg-blue-600 px-2 py-1">Upload thumbnail </p>
+                </label>
+                <input type="file" id="thumbnail" />
+              </span>
+            </div> 
+             <br />
+            <div className=" flex justify-end">
+            <button className="bg-green-600 rounded-sm px-2 py-1">Upload Video</button>
             </div>
-          </form>
+          </section>
         )}
       </div>
     </div>

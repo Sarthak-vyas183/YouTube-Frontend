@@ -53,7 +53,8 @@ function SignUp() {
   // Submit the form data
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+     console.log(formData.avatar)
+     console.log(formData.coverImage)
     if (
       !formData.fullName ||
       !formData.email ||

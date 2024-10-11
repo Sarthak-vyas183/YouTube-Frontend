@@ -1,8 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaThumbsUp, FaThumbsDown, FaShare, FaDownload, FaEllipsisH } from 'react-icons/fa';
 import Comment from './Comment';
+import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css"; 
+import axios from 'axios';
 
 function VideoPlayer() {
+  const [video, setvideo] = useState({});
+  const [Recommeded, setRecommended] = useState([]);
+
+  const {id} = useParams();
+  const handlePlay = async () => {
+    try {
+      const response = await axios.get(`/api/v1/videos/${id}`)
+      console.log(response.data.data)
+      setvideo(response.data.data)
+    } catch (error) {
+      console.log(error)
+      toast.error("Internal server error")
+    }
+  }  
+  const getRecommendedVideos = async () => {
+     try {
+       const response = await axios.get('/api/v1/videos');
+       console.log(response.data.data)
+       setRecommended(response.data.data)
+     } catch (error) {
+      console.log(error)
+      toast.error("Internal server Error")
+     }
+  }
+
+  useEffect(()=>{
+    handlePlay()
+    getRecommendedVideos()
+  },[])
   return (
     <div className="min-h-full w-full flex bg-[rgb(15,15,15)] text-white py-4 px-16">
 
@@ -11,7 +44,7 @@ function VideoPlayer() {
         {/* Video player */}
         <div className="w-full h-96 mb-4">
           <iframe
-            src="https://res.cloudinary.com/sarthak183/video/upload/v1726167029/muaan5t0hwkr7wioq0l4.mp4"
+            src={video.videoFile}
             allow="autoplay; encrypted-media"
             allowFullScreen
             className="w-full h-full"
@@ -19,14 +52,14 @@ function VideoPlayer() {
         </div>
 
         {/* Video title */}
-        <h1 className="text-xl font-bold mb-2">कठोपनिषद् | पर - परिच्छेद संवाद (भाग-१) | Kathopanishad Part - 1 | Katha Upanishad in Hindi</h1>
+        <h1 className="text-xl font-bold mb-2">{video.title}</h1>
 
         {/* Channel info and actions */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center">
-            <img src="https://via.placeholder.com/40" alt="Channel avatar" className="rounded-full mr-2" />
+            <img src={video.ownerDetail.avatar} alt="Channel avatar" className="rounded-full mr-2 w-10 h-10" />
             <div>
-              <p className="font-bold">Channel Name</p>
+              <p className="font-bold">{video.ownerDetail.username}</p>
               <p className="text-sm text-gray-400">1.5M subscribers</p>
             </div>
           </div>

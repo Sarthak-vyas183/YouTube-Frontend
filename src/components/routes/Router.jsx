@@ -52,7 +52,7 @@ function Router() {
              <Route path='yourVideo' element={<YourVideo/>} /> 
          </Route> 
 
-         <Route path='/playvideo' element={<VideoPlayer/>}/> 
+         <Route path='/playvideo/:id' element={<VideoPlayer/>}/> 
 
          <Route path='/Account' element={<AccountSelector/>}>
               <Route path='login' element={<Login/>} />

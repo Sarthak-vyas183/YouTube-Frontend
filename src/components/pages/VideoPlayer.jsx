@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css"; 
 import axios from 'axios';
+import Default from '../../assets/logo.png'
 
 function VideoPlayer() {
   const [video, setvideo] = useState({});
@@ -20,7 +21,8 @@ function VideoPlayer() {
       console.log(error)
       toast.error("Internal server error")
     }
-  }  
+  }   
+
   const getRecommendedVideos = async () => {
      try {
        const response = await axios.get('/api/v1/videos');
@@ -57,9 +59,13 @@ function VideoPlayer() {
         {/* Channel info and actions */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center">
-            <img src={video.ownerDetail.avatar} alt="Channel avatar" className="rounded-full mr-2 w-10 h-10" />
+          <img 
+            src={video.ownerDetail && video.ownerDetail.avatar ? video.ownerDetail.avatar : Default} 
+            alt="Channel avatar" 
+            className="rounded-full mr-2 w-10 h-10" 
+            />
             <div>
-              <p className="font-bold">{video.ownerDetail.username}</p>
+              <p className="font-bold">{video.ownerDetail && video.ownerDetail.username ? video.ownerDetail.username : 'Guest User'}</p>
               <p className="text-sm text-gray-400">1.5M subscribers</p>
             </div>
           </div>
@@ -102,14 +108,7 @@ function VideoPlayer() {
       {/* Sidebar */}
       <div className="w-1/4">
         {/* Shorts section */}
-        <div className="mb-4">
-          <h3 className="font-bold mb-2">Shorts</h3>
-          <div className="flex space-x-2 overflow-x-auto">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="w-24 h-40 bg-[#272727] rounded-lg flex-shrink-0"></div>
-            ))}
-          </div>
-        </div>
+       
 
         {/* Recommended videos */}
         <div>
@@ -129,6 +128,7 @@ function VideoPlayer() {
 
 
     </div>
+   
   );
 }
 

@@ -3,132 +3,143 @@ import { FaThumbsUp, FaThumbsDown, FaShare, FaDownload, FaEllipsisH } from 'reac
 import Comment from './Comment';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import "react-toastify/dist/ReactToastify.css"; 
+import "react-toastify/dist/ReactToastify.css";
 import axios from 'axios';
-import Default from '../../assets/logo.png'
+import Default from '../../assets/logo.png';
+import { CloudCog } from 'lucide-react';
 
 function VideoPlayer() {
-  const [video, setvideo] = useState({});
-  const [Recommeded, setRecommended] = useState([]);
+  const [video, setVideo] = useState({});
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState('');
+  const { id } = useParams();
+  const token = localStorage.getItem('token');
 
-  const {id} = useParams();
+  const [likes, setLikes] = useState(0);
+  const [dislikes, setDislikes] = useState(0);
+
+  const handleLike = () => setLikes(likes + 1);
+  const handleDislike = () => setDislikes(dislikes + 1);
+
   const handlePlay = async () => {
     try {
-      const response = await axios.get(`/api/v1/videos/${id}`)
-      console.log(response.data.data)
-      setvideo(response.data.data)
+      const response = await axios.get(`/api/v1/videos/${id}`);
+      setVideo(response.data.data);
+      console.log(response.data.data);
     } catch (error) {
-      console.log(error)
-      toast.error("Internal server error")
+      toast.error("Internal server error");
     }
-  }   
+  };
 
-  const getRecommendedVideos = async () => {
-     try {
-       const response = await axios.get('/api/v1/videos');
-       console.log(response.data.data)
-       setRecommended(response.data.data)
-     } catch (error) {
-      console.log(error)
-      toast.error("Internal server Error")
-     }
-  }
+  const getAllComments = async () => {
+    if (!id) return;
+    try {
+      const response = await axios.get(`/api/v1/comment/${id}`);
+      if (!response) {
+        alert("No comments found");
+        return;
+      }
+      setComments(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  useEffect(()=>{
-    handlePlay()
-    getRecommendedVideos()
-  },[])
+  const handleCommentSubmit = async (e) => {
+    e.preventDefault();
+    if (!token) {
+      toast.error("You must be logged in to comment");
+      return;
+    }
+    try {
+      const response = await axios.post(
+        `/api/v1/comment/${id}`,
+        {
+          content: newComment, // The comment content from the user
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Replace `token` with your actual authentication token
+            "Content-Type": "application/json", // Specifies the content type
+          },
+        }
+      );
+      setComments([...comments, response.data.data]);
+      setNewComment('');
+    } catch (error) {
+      toast.error("Failed to post comment");
+    }
+  };
+
+  useEffect(() => {
+    handlePlay();
+  }, [id]);
+
+  useEffect(() => {
+    getAllComments();
+  }, []);
+
   return (
-    <div className="min-h-full w-full flex bg-[rgb(15,15,15)] text-white py-4 px-16">
+    <div className="bg-[rgb(15,15,15)] min-h-auto max-w-screen py-6">
+      {/* Video Player Section */}
+      <div className="bg-black w-full h-[70vh] max-w-4xl mx-auto mb-6 rounded-lg flex justify-center overflow-hidden">
+        <video
+          src={video.videoFile}
+          fullscreen="true"
+          controls="true"
+        ></video>
+      </div>
 
-      {/* Main content */}
-      <div className="w-[70%] h-[70%] pr-4">
-        {/* Video player */}
-        <div className="w-full h-96 mb-4">
-          <iframe
-            src={video.videoFile}
-            allow="autoplay; encrypted-media"
-            allowFullScreen
-            className="w-full h-full"
-          ></iframe>
-        </div>
-
-        {/* Video title */}
-        <h1 className="text-xl font-bold mb-2">{video.title}</h1>
-
-        {/* Channel info and actions */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center">
-          <img 
-            src={video.ownerDetail && video.ownerDetail.avatar ? video.ownerDetail.avatar : Default} 
-            alt="Channel avatar" 
-            className="rounded-full mr-2 w-10 h-10" 
-            />
-            <div>
-              <p className="font-bold">{video.ownerDetail && video.ownerDetail.username ? video.ownerDetail.username : 'Guest User'}</p>
-              <p className="text-sm text-gray-400">1.5M subscribers</p>
-            </div>
-          </div>
-          <div className="flex space-x-2">
-            <button className="flex items-center bg-[#272727] px-4 py-2 rounded-full">
-              <FaThumbsUp className="mr-2" /> 10K
-            </button>
-            <button className="flex items-center bg-[#272727] px-4 py-2 rounded-full">
-              <FaThumbsDown className="mr-2" />
-            </button>
-            <button className="flex items-center bg-[#272727] px-4 py-2 rounded-full">
-              <FaShare className="mr-2" /> Share
-            </button>
-            <button className="flex items-center bg-[#272727] px-4 py-2 rounded-full">
-              <FaDownload className="mr-2" /> Download
-            </button>
-            <button className="bg-[#272727] p-2 rounded-full">
-              <FaEllipsisH />
-            </button>
-          </div>
-        </div>
-
-        {/* Video description */}
-        <div className="bg-[#272727] p-4 rounded-lg mb-4">
-          <p className="text-sm">1.7K views • 1 year ago</p>
-          <p className="mt-2">Video description goes here...</p>
-        </div>
-
-        {/* Comments section */}
-        <div>
-          <h3 className="text-lg font-bold mb-2">12 Comments</h3>
-           <Comment/>
-           <Comment/>
-           <Comment/>
-           <Comment/>
-           <Comment/>
+      <div className="max-w-4xl mx-auto bg-transparant text-white shadow-md rounded-lg p-6">
+        <h1 className="text-2xl font-bold mb-2">{video.title}</h1>
+        <p className="mb-4">
+          {video.description}
+        </p>
+        <div className="flex items-center space-x-4">
+          <button
+            onClick={handleLike}
+            className="flex items-center space-x-2 text-green-600 font-semibold"
+          >
+            <span>👍</span> <span>Like ({likes})</span>
+          </button>
+          <button
+            onClick={handleDislike}
+            className="flex items-center space-x-2 text-red-600 font-semibold"
+          >
+            <span>👎</span> <span>Dislike ({dislikes})</span>
+          </button>
+          <button className="flex items-center space-x-2 text-blue-600 font-semibold">
+            <span>🔗</span> <span>Share</span>
+          </button>
         </div>
       </div>
 
-      {/* Sidebar */}
-      <div className="w-1/4">
-        {/* Shorts section */}
-       
-
-        {/* Recommended videos */}
-        <div>
-          <h3 className="font-bold mb-2">Recommended</h3>
-          {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="flex mb-2">
-              <div className="w-40 h-24 bg-[#272727] rounded-lg mr-2"></div>
-              <div>
-                <p className="font-bold text-sm">Video Title</p>
-                <p className="text-xs text-gray-400">Channel Name</p>
-                <p className="text-xs text-gray-400">10K views • 1 year ago</p>
-              </div>
-            </div>
+      {/* Comments Section */}
+      <div className="max-w-4xl mx-auto bg-transparant text-white shadow-md rounded-lg p-6">
+        <form onSubmit={handleCommentSubmit} className="mt-4">
+          <textarea
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            className="w-full outline-none p-2 rounded-lg bg-[#272727] text-white"
+            placeholder="Write a comment..."
+            rows="2"
+          ></textarea>
+          <button
+            type="submit"
+            className="mt-2 bg-blue-500 text-white px-4 py-2 rounded-lg"
+          >
+            Post Comment
+          </button>
+        </form>
+        <h3 className="text-lg font-bold mb-2">{comments.length} comments</h3>
+        <div className="space-y-4">
+          {comments.map((comment) => (
+            <Comment key={comment._id} comment={comment} />
           ))}
         </div>
-      </div> 
 
-
+      </div>
     </div>
-   
   );
 }
 

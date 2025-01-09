@@ -24,7 +24,7 @@ import SignUp from '../pages/Registeration/SignUp';
 
 function Router() {
   return (
-    <div className='w-full h-[89.5%] absolute top-[10vh]'>
+    <div className='w-full h-[89.5%] absolute top-[10vh] overflow-x-hidden'>
       <Routes>
         
          <Route path="/" element={<Home/>}>  

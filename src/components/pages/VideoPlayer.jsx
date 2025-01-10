@@ -12,6 +12,7 @@ function VideoPlayer() {
   const [video, setVideo] = useState({});
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
+  const [loading, setLoading] = useState(false);
   const { id } = useParams();
   const token = localStorage.getItem('token');
 
@@ -25,7 +26,6 @@ function VideoPlayer() {
     try {
       const response = await axios.get(`/api/v1/videos/${id}`);
       setVideo(response.data.data);
-      console.log(response.data.data);
     } catch (error) {
       toast.error("Internal server error");
     }
@@ -47,37 +47,55 @@ function VideoPlayer() {
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
+
+    // Check if the user is logged in
     if (!token) {
       toast.error("You must be logged in to comment");
       return;
     }
+
+    // Validate that the comment is not empty
+    if (!newComment.trim()) {
+      toast.error("Comment cannot be empty");
+      return;
+    }
+
     try {
+      setLoading(true);
+
       const response = await axios.post(
         `/api/v1/comment/${id}`,
-        {
-          content: newComment, // The comment content from the user
-        },
+        { content: newComment.trim() }, // Trim whitespace from the comment
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Replace `token` with your actual authentication token
-            "Content-Type": "application/json", // Specifies the content type
+            Authorization: `Bearer ${token}`, // Authentication token
+            "Content-Type": "application/json", // Content type header
           },
         }
       );
-      setComments([...comments, response.data.data]);
+      // Clear the comment input field
       setNewComment('');
+
+      // Display a success message
+      toast.success("Comment posted successfully");
+
+      // Re-fetch comments to update the list
+      getAllComments();
     } catch (error) {
-      toast.error("Failed to post comment");
+      if (error.response && error.response.data) {
+        toast.error(error.response.data.message || "Failed to post comment");
+      } else {
+        toast.error("An unexpected error occurred. Please try again.");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     handlePlay();
-  }, [id]);
-
-  useEffect(() => {
     getAllComments();
-  }, []);
+  }, [id]);
 
   return (
     <div className="bg-[rgb(15,15,15)] min-h-auto max-w-screen py-6">
@@ -127,6 +145,7 @@ function VideoPlayer() {
           <button
             type="submit"
             className="mt-2 bg-blue-500 text-white px-4 py-2 rounded-lg"
+            disabled={loading}
           >
             Post Comment
           </button>

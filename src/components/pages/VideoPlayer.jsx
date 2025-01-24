@@ -15,6 +15,7 @@ function VideoPlayer() {
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
   const token = localStorage.getItem('token');
+  const [likecount, setLikeCount] = useState(0);
 
   const handlePlay = async () => {
     try {
@@ -88,10 +89,22 @@ function VideoPlayer() {
     }
   };
 
+  const getLikedCount = async () => { 
+    try {
+      const response = await axios.post(`/api/v1/videos/toggle/publish/${id}`);
+      setLikeCount(response.data.count);
+      console.log(response.data.count);
+    } catch (error) {
+      toast.error("Internal server error");
+    }
+  }
+  
+
   useEffect(() => {
     handlePlay();
     getAllComments();
     getRecommendedVideos();
+    getLikedCount();
   }, [id]);
 
   return (
@@ -126,8 +139,8 @@ function VideoPlayer() {
           </div>
           <div className="flex space-x-2">
             <button className="flex items-center bg-[#272727] px-4 py-2 rounded-full">
-              <FaThumbsUp className="mr-2" /> 10K
-            </button>
+              <FaThumbsUp className="mr-2" /> {likecount}
+            </button> 
             <button className="flex items-center bg-[#272727] px-4 py-2 rounded-full">
               <FaThumbsDown className="mr-2" />
             </button>

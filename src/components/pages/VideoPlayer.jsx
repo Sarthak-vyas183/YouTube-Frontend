@@ -100,10 +100,14 @@ function VideoPlayer() {
   }
   
   const handleLike = async () => {
-    try {
+    try { 
+       if(!token) { 
+         toast.error("You must be logged in to like the video");
+          return;
+       }
         const response = await axios.post(
           `/api/v1/like/toggle/v/${id}`,
-          { content: newComment.trim() },
+          {},
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -116,7 +120,26 @@ function VideoPlayer() {
       console.log(error)
       toast.error("Internal server error");
     }
-  }
+  } 
+
+  const getLikeOnComment = async (commentId) => {
+    try {
+      const response = await axios.post(`/api/v1/videos/toggle/C/${commentId}`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      setComments((prevComments) =>
+        prevComments.map((comment) =>
+          comment._id === commentId ? { ...comment, likes: response.data.count } : comment
+        )
+      );
+    } catch (error) {
+      console.log(error);
+      toast.error("Internal server error");
+    }
+  };
 
   useEffect(() => {
     handlePlay();
@@ -189,6 +212,7 @@ function VideoPlayer() {
               placeholder="Add a comment..."
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
+              required
             ></textarea>
             <button
               className="mt-2 px-4 py-2 bg-blue-600 rounded-full text-white"
@@ -201,7 +225,15 @@ function VideoPlayer() {
           <h3 className="text-lg font-bold mb-2">{comments.length} comments</h3>
           <div className="space-y-4">
             {comments.map((comment) => (
-              <Comment key={comment._id} comment={comment} />
+              <div key={comment._id} className="flex items-start space-x-4">
+                <Comment comment={comment} />
+                <button
+                  className="px-2 py-1 bg-blue-600 rounded-full text-white"
+                  onClick={() => getLikeOnComment(comment._id)}
+                >
+                  Like
+                </button>
+              </div>
             ))}
           </div>
           {/* Comment input box */}

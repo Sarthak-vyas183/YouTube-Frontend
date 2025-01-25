@@ -1,7 +1,19 @@
 import { FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
+import { useState } from 'react';
+import axios from 'axios';
 
 function CommentCard({ comment }) {
+  const [likes, setLikes] = useState(comment.like);
   const ownerDetail = comment.ownerDetail && comment.ownerDetail[0];
+
+  const handleLike = async () => {
+    try {
+      const response = await axios.post(`/api/v1/like/toggle/c/${comment._id}`);
+      setLikes(response.data.count);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="flex space-x-3 p-4 bg-[#0f0f0f] text-white">
@@ -16,8 +28,8 @@ function CommentCard({ comment }) {
             <p className="mt-1">{comment.content}</p>
             <div className="flex items-center space-x-4 mt-2">
               <div className="flex items-center space-x-1">
-                <FaThumbsUp className="text-gray-400" />
-                <span>11k</span>
+                <FaThumbsUp className="text-gray-400 cursor-pointer" onClick={handleLike} />
+                <span>{comment.like}</span>
               </div>
               <FaThumbsDown className="text-gray-400" />
               <button className="text-gray-400 font-bold">Reply</button>

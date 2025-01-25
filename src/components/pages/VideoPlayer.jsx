@@ -99,6 +99,24 @@ function VideoPlayer() {
     }
   }
   
+  const handleLike = async () => {
+    try {
+        const response = await axios.post(
+          `/api/v1/like/toggle/v/${id}`,
+          { content: newComment.trim() },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+      getLikedCount()
+    } catch (error) {
+      console.log(error)
+      toast.error("Internal server error");
+    }
+  }
 
   useEffect(() => {
     handlePlay();
@@ -138,7 +156,7 @@ function VideoPlayer() {
             </div>
           </div>
           <div className="flex space-x-2">
-            <button className="flex items-center bg-[#272727] px-4 py-2 rounded-full">
+            <button onClick={handleLike} className="flex items-center bg-[#272727] px-4 py-2 rounded-full">
               <FaThumbsUp className="mr-2" /> {likecount}
             </button> 
             <button className="flex items-center bg-[#272727] px-4 py-2 rounded-full">
